@@ -191,15 +191,7 @@ function generateClassic() {
           </svg>
         `;
         iconBtn.onclick = () => {
-            let wordsArray = [];
-            if (game.name === 'Крокодил') wordsArray = crocodileWords;
-            else if (game.name === 'Шляпа') wordsArray = hatWords;
-            else if (game.name === 'Объясни слово') wordsArray = explainWords;
-            const words = getRandomWords(wordsArray, playerCount || 4);
-            const rules = (classicGames.find(g => g.name === game.name) || {}).rules || '';
-            const messages = words.map(w => `Игра: <b>${game.name}</b>\n${rules}\nТебе слово: <b>${w}</b>`);
-            sendGameToBot(game.name, messages);
-            iconBtn.disabled = true;
+            window.open('https://t.me/partyfunzabava_bot?start=givewords', '_blank');
         };
         row.appendChild(iconBtn);
 
