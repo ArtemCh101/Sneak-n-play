@@ -9,8 +9,8 @@ import asyncio
 import threading
 from flask import Flask, request, jsonify
 from flask_cors import CORS # We will use Flask's own CORS handling
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram import Update, ReplyKeyboardMarkup
+from telegram.ext import Application, CommandHandler, ContextTypes, ConversationHandler, MessageHandler, filters
 
 # --- CONFIGURATION ---
 TOKEN = '8415322329:AAG4pKDLVf3nbBqBLVRnAm2VW2xXTRlTFu4'
@@ -71,9 +71,15 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except FileNotFoundError:
         with open(USERS_FILE, 'w') as f:
             f.write(f"{user_id}\n")
-    
+
     logger.info(f"Bot: User {user_id} issued /start command.")
-    await update.message.reply_text('Вы успешно зарегистрированы!')
+    args = context.args
+    if args and args[0] == 'givewords':
+        await update.message.reply_text(
+            'Чтобы получить слова для игры, напиши /givewords и выбери игру из списка!'
+        )
+    else:
+        await update.message.reply_text('Вы успешно зарегистрированы!')
 
 async def message_consumer(queue: asyncio.Queue, app: Application):
     logger.info("Bot: Message consumer started.")
@@ -90,6 +96,46 @@ async def message_consumer(queue: asyncio.Queue, app: Application):
                 logger.error(f"Bot: FAILED to send to {user_id}. REASON: {e}")
             await asyncio.sleep(0.1)
         queue.task_done()
+
+# --- GAME WORDS FOR /givewords ---
+GAMES = {
+    'Крокодил': [
+        'пылесос', 'йога', 'космонавт', 'пожарный', 'балерина', 'слон', 'гитара', 'пицца', 'самолёт', 'пловец',
+        'учитель', 'пингвин', 'библиотека', 'паровоз', 'футболист', 'скейтборд', 'петух', 'компьютер', 'арбуз',
+        'собака', 'пожарная машина', 'велосипед', 'певец', 'пекарь', 'медведь', 'пароход', 'пилот', 'рыбак',
+        'пчела', 'петрушка', 'дирижёр', 'зоопарк', 'музей', 'театр', 'врач', 'программист', 'строитель',
+        'водитель', 'спортсмен', 'стол', 'стул', 'книга', 'телефон', 'чайник', 'карандаш', 'зонт', 'куртка',
+        'очки', 'кошка', 'попугай', 'лошадь', 'тигр', 'лев', 'жираф', 'белка'
+    ],
+    'Шляпа': [
+        'арбуз', 'балет', 'барабан', 'библиотека', 'билет', 'бокал', 'больница', 'бутылка', 'ваза', 'велосипед',
+        'вертолёт', 'ветер', 'вилка', 'виноград', 'вода', 'воробей', 'газета', 'гитара', 'глобус', 'город',
+        'гриб', 'грузовик', 'дача', 'дворец', 'диван', 'дождь', 'дом', 'доска', 'дракон', 'друг', 'еж',
+        'жираф', 'жук', 'завод', 'заяц', 'зебра', 'зеркало', 'зонт', 'игра', 'игрушка', 'книга', 'компьютер'
+    ],
+    'Объясни слово': [
+        'балкон', 'библиотека', 'дворец', 'завод', 'инструмент', 'кактус', 'корабль', 'лампа', 'мост', 'музей',
+        'облако', 'остров', 'планета', 'пылесос', 'ракета', 'река', 'самолёт', 'спектакль', 'танк', 'театр',
+        'телевизор', 'трактор', 'университет', 'фотоаппарат', 'цирк', 'чемодан', 'школа', 'энциклопедия', 'якорь'
+    ]
+}
+CHOOSE_GAME = 1
+
+async def givewords_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    games = list(GAMES.keys())
+    reply_markup = ReplyKeyboardMarkup([[g] for g in games], one_time_keyboard=True, resize_keyboard=True)
+    await update.message.reply_text('Выбери игру для получения слова:', reply_markup=reply_markup)
+    return CHOOSE_GAME
+
+async def givewords_choose(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    game = update.message.text
+    if game in GAMES:
+        import random
+        word = random.choice(GAMES[game])
+        await update.message.reply_text(f'Твоё слово для игры "{game}":\n<b>{word}</b>', parse_mode='HTML')
+    else:
+        await update.message.reply_text('Неизвестная игра. Попробуй ещё раз.')
+    return ConversationHandler.END
 
 # ============================================================
 # MAIN EXECUTION BLOCK (Putting it all together)
@@ -111,6 +157,13 @@ async def main():
     
     application = Application.builder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start_command))
+    # Add /givewords command
+    conv = ConversationHandler(
+        entry_points=[CommandHandler("givewords", givewords_start)],
+        states={CHOOSE_GAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, givewords_choose)]},
+        fallbacks=[]
+    )
+    application.add_handler(conv)
 
     # Start the bot and the consumer task
     async with application:
