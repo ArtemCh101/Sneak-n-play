@@ -128,6 +128,54 @@
       padding: 1.5rem;
       flex-direction: column;
     }
+    .main-content {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      width: 90vw;
+      max-width: 900px;
+      min-height: 340px;
+      background: rgba(34, 193, 195, 0.10);
+      border: 2px solid #fff600;
+      border-radius: 16px;
+      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      margin-bottom: 2rem;
+    }
+    .illustration-col {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      background: transparent;
+    }
+    .illustration-col img {
+      max-width: 100%;
+      max-height: 320px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
+      object-fit: contain;
+    }
+    .content-col {
+      flex: 2 1 0;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+    .game-explanation {
+      color: #fff;
+      /* Optionally, add text-shadow for extra readability */
+      text-shadow: 0 0 6px #18122B, 0 0 2px #fff600;
+    }
+    @media (max-width: 800px) {
+      .main-content { flex-direction: column; min-height: unset; width: 98vw; margin-left: 1vw; margin-right: 1vw; }
+      .illustration-col, .content-col { width: 100%; padding: 1rem 0; }
+      .illustration-col img { max-height: 180px; }
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
@@ -171,11 +219,14 @@
       <option value="20">20</option>
     </select>
   </div>
-  <div>
-    <button class="neon-btn" onclick="generateClassic()">Классическая игра</button>
-    <button class="neon-btn" onclick="generateAI()">AI-генератор игры</button>
+  <div class="button-row">
+    <button class="neon-btn" id="classic-btn">Классическая игра</button>
+    <button class="neon-btn" id="ai-btn">AI-генератор игры</button>
   </div>
-  <div id="result">Нажми на кнопку и получи игру для весёлой компании!</div>
+  <div class="main-content" id="main-content">
+    <div class="illustration-col" id="illustration-col"></div>
+    <div class="content-col" id="content-col"></div>
+  </div>
   <div id="extra-content" style="margin-top:1.2em;"></div>
   <script src="script.js"></script>
   <script>
@@ -235,6 +286,37 @@
         window.renewExplainWords = function(){};
       }
     }
+    const illustrationImages = [
+      'image/snake_tree.png',
+      'image/snake_aristo.png',
+      'image/snake_scoobypng.png',
+      'image/snake_heart.png',
+      'image/snake_baloon.png',
+      'image/snake_ny.png',
+      'image/snake_hanging.png'
+    ];
+
+    function getRandomIllustration() {
+      const idx = Math.floor(Math.random() * illustrationImages.length);
+      return illustrationImages[idx];
+    }
+
+    // Show a random image on first load
+    window.onload = function() {
+      const illustration = getRandomIllustration();
+      document.getElementById('illustration-col').innerHTML = `<img src="${illustration}" alt="Illustration">`;
+      document.getElementById('content-col').innerHTML = `<div class="game-explanation" style="margin-top:0.7em;">Нажмите кнопку, чтобы получить идею для игры!</div>`;
+      // Fix: Set up button event listeners after DOM is loaded
+      document.getElementById('classic-btn').onclick = generateClassic;
+      document.getElementById('ai-btn').onclick = generateAI;
+    };
+
+    function showGameWithIllustration(name, descOrRules) {
+      const illustration = getRandomIllustration();
+      document.getElementById('illustration-col').innerHTML = `<img src="${illustration}" alt="Illustration">`;
+      document.getElementById('content-col').innerHTML = `<div class="neon-game-name">${name}</div><div class="game-explanation" style="margin-top:0.7em;">${descOrRules}</div>`;
+    }
+
     function generateClassic() {
       console.log('DEBUG: generateClassic called');
       const playerCount = parseInt(document.getElementById('playerCount').value);
@@ -248,12 +330,12 @@
         return;
       }
       const game = filteredGames[Math.floor(Math.random() * filteredGames.length)];
-      document.getElementById('result').innerHTML = `<div class="neon-game-name">${game.name}</div><div style="margin-top:0.7em;">${game.detailedRules || game.rules}</div>`;
+      showGameWithIllustration(game.name, game.detailedRules || game.rules);
       showExtraContent(game.name);
     }
     function generateAI() {
       const game = aiGames[Math.floor(Math.random() * aiGames.length)];
-      document.getElementById('result').innerHTML = `<div class="neon-game-name">${game.name}</div><div style="margin-top:0.7em;">${game.rules}</div>`;
+      showGameWithIllustration(game.name, game.rules);
       document.getElementById('extra-content').innerHTML = '';
     }
   </script>
@@ -269,4 +351,4 @@
     });
   </script>
 </body>
-</html> 
+</html>
