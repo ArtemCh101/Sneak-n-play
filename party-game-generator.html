@@ -57,11 +57,6 @@
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       outline: none;
     }
-     .neon-btn:hover {
-      background: #FF00CC;
-      color: #18122B;
-      box-shadow: 0 0 20px #FF00CC, 0 0 40px #FF00CC, 0 0 80px #00E0FF;
-    }
     .neon-btn-green {
       display: block;
       margin: 0 auto 1em auto;
@@ -90,13 +85,6 @@
         0 0 40px #39FF14,
         0 0 80px #00E0FF;
     }
-     .neon-btn-green:disabled {
-      cursor: not-allowed;
-      border-color: #555;
-      color: #555;
-      box-shadow: none;
-      background: #2a2a2a;
-    }
     .neon-game-name {
       font-family: 'Monoton', cursive;
       font-size: 3.1rem;
@@ -121,8 +109,7 @@
     }
     #result {
       min-height: 80px;
-      max-width: 80vw;
-      width: 700px;
+      min-width: 300px;
       background: rgba(24, 18, 43, 0.8);
       border: 2px solid #00E0FF;
       border-radius: 20px;
@@ -141,6 +128,54 @@
       padding: 1.5rem;
       flex-direction: column;
     }
+    .main-content {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      width: 90vw;
+      max-width: 900px;
+      min-height: 340px;
+      background: rgba(34, 193, 195, 0.10);
+      border: 2px solid #fff600;
+      border-radius: 16px;
+      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      margin-bottom: 2rem;
+    }
+    .illustration-col {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      background: transparent;
+    }
+    .illustration-col img {
+      max-width: 100%;
+      max-height: 320px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
+      object-fit: contain;
+    }
+    .content-col {
+      flex: 2 1 0;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+    .game-explanation {
+      color: #fff;
+      /* Optionally, add text-shadow for extra readability */
+      text-shadow: 0 0 6px #18122B, 0 0 2px #fff600;
+    }
+    @media (max-width: 800px) {
+      .main-content { flex-direction: column; min-height: unset; width: 98vw; margin-left: 1vw; margin-right: 1vw; }
+      .illustration-col, .content-col { width: 100%; padding: 1rem 0; }
+      .illustration-col img { max-height: 180px; }
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
@@ -158,16 +193,14 @@
       </svg>
     </div>
   </div>
-
   <div class="neon-header">Вечериночные забавы</div>
-
   <div style="margin-bottom:1rem;">
     <label for="playerCount" style="color:#00E0FF;font-family:'Orbitron',sans-serif;font-size:1.25rem;font-weight:bold;">Количество игроков:</label>
     <select id="playerCount" style="font-size:1.25rem;font-weight:bold;padding:0.3rem 1rem;border-radius:10px;border:2px solid #00E0FF;background:#18122B;color:#00E0FF;outline:none;">
       <option value="">Любое</option>
       <option value="2">2</option>
       <option value="3">3</option>
-      <option value="4" selected>4</option>
+      <option value="4">4</option>
       <option value="5">5</option>
       <option value="6">6</option>
       <option value="7">7</option>
@@ -186,27 +219,134 @@
       <option value="20">20</option>
     </select>
   </div>
-
-  <div>
-    <!-- The buttons now have IDs and no 'onclick' attributes -->
-    <button id="classicButton" class="neon-btn">Классическая игра</button>
-    <button id="aiButton" class="neon-btn">AI-генератор игры</button>
+  <div class="button-row">
+    <button class="neon-btn" id="classic-btn">Классическая игра</button>
+    <button class="neon-btn" id="ai-btn">AI-генератор игры</button>
   </div>
-
-  <div id="result">Нажми на кнопку и получи игру для весёлой компании!</div>
+  <div class="main-content" id="main-content">
+    <div class="illustration-col" id="illustration-col"></div>
+    <div class="content-col" id="content-col"></div>
+  </div>
   <div id="extra-content" style="margin-top:1.2em;"></div>
-
-  <!-- Our unified script file is loaded at the end of the body -->
   <script src="script.js"></script>
-
-  <!-- The QR code script remains, as it's self-contained -->
   <script>
-    new QRious({
+    const aiGames = [
+      {
+        name: 'СмехоБаттл',
+        rules: 'Два игрока по очереди рассказывают самые нелепые шутки. Кто засмеётся первым — проиграл!'
+      },
+      {
+        name: 'Звуковой Хаос',
+        rules: 'Один игрок изображает любой звук (животное, техника, природа), остальные угадывают. Кто угадал — следующий!'
+      },
+      {
+        name: 'Мини-Диктор',
+        rules: 'Каждый по очереди озвучивает новости дня в стиле комедии или фантастики. Чем абсурднее — тем лучше!'
+      },
+      {
+        name: 'Путаница слов',
+        rules: 'Игроки по очереди говорят слова, не связанные друг с другом. Кто случайно свяжет — рассказывает анекдот!'
+      },
+      {
+        name: 'Театр эмоций',
+        rules: 'Один игрок изображает эмоцию, остальные угадывают. Иногда эмоция — “я увидел огромную пиццу”.'
+      },
+      {
+        name: 'Сказка на лету',
+        rules: 'Один начинает рассказывать сказку, каждый следующий добавляет по предложению. Чем нелепее — тем веселее!'
+      },
+      {
+        name: 'Рифмопад',
+        rules: 'Придумайте рифму к слову соседа. Кто не смог — рассказывает стихотворение!'
+      },
+      {
+        name: 'Голос из будущего',
+        rules: 'Один говорит фразу, как будто он робот из будущего. Остальные угадывают, что это за фраза.'
+      },
+      {
+        name: 'Секретный комплимент',
+        rules: 'Каждый по очереди говорит комплимент, но с необычным словом (например, “ты как солнечный холодильник!”).'
+      },
+      {
+        name: 'Вопрос наоборот',
+        rules: 'На любой вопрос можно отвечать только вопросом. Кто ошибётся — поёт песню!'
+      }
+    ];
+    function showExtraContent(gameName) {
+      const extraDiv = document.getElementById('extra-content');
+      extraDiv.innerHTML = '';
+      if (gameName === 'Крокодил') {
+        extraDiv.innerHTML = `<button class='neon-btn-green' onclick='window.renewCrocodileWords()'>Обновить слова</button>`;
+        window.renewCrocodileWords = function(){};
+      } else if (gameName === 'Шляпа') {
+        extraDiv.innerHTML = `<button class='neon-btn-green' onclick='window.renewHatWords()'>Обновить слова</button>`;
+        window.renewHatWords = function(){};
+      } else if (gameName === 'Объясни слово') {
+        extraDiv.innerHTML = `<button class='neon-btn-green' onclick='window.renewExplainWords()'>Обновить слова</button>`;
+        window.renewExplainWords = function(){};
+      }
+    }
+    const illustrationImages = [
+      'image/snake_tree.png',
+      'image/snake_aristo.png',
+      'image/snake_scoobypng.png',
+      'image/snake_heart.png',
+      'image/snake_baloon.png',
+      'image/snake_ny.png',
+      'image/snake_hanging.png'
+    ];
+
+    function getRandomIllustration() {
+      const idx = Math.floor(Math.random() * illustrationImages.length);
+      return illustrationImages[idx];
+    }
+
+    // Show a random image on first load
+    window.onload = function() {
+      const illustration = getRandomIllustration();
+      document.getElementById('illustration-col').innerHTML = `<img src="${illustration}" alt="Illustration">`;
+      document.getElementById('content-col').innerHTML = `<div class="game-explanation" style="margin-top:0.7em;">Нажмите кнопку, чтобы получить идею для игры!</div>`;
+      // Fix: Set up button event listeners after DOM is loaded
+      document.getElementById('classic-btn').onclick = generateClassic;
+      document.getElementById('ai-btn').onclick = generateAI;
+    };
+
+    function showGameWithIllustration(name, descOrRules) {
+      const illustration = getRandomIllustration();
+      document.getElementById('illustration-col').innerHTML = `<img src="${illustration}" alt="Illustration">`;
+      document.getElementById('content-col').innerHTML = `<div class="neon-game-name">${name}</div><div class="game-explanation" style="margin-top:0.7em;">${descOrRules}</div>`;
+    }
+
+    function generateClassic() {
+      console.log('DEBUG: generateClassic called');
+      const playerCount = parseInt(document.getElementById('playerCount').value);
+      let filteredGames = classicGames.slice(0, 8).filter(g => g.name !== 'Данетки');
+      if (!isNaN(playerCount)) {
+        filteredGames = filteredGames.filter(g => playerCount >= g.minPlayers && playerCount <= g.maxPlayers);
+      }
+      if (filteredGames.length === 0) {
+        document.getElementById('result').textContent = 'Нет подходящих игр для такого количества игроков!';
+        document.getElementById('extra-content').innerHTML = '';
+        return;
+      }
+      const game = filteredGames[Math.floor(Math.random() * filteredGames.length)];
+      showGameWithIllustration(game.name, game.detailedRules || game.rules);
+      showExtraContent(game.name);
+    }
+    function generateAI() {
+      const game = aiGames[Math.floor(Math.random() * aiGames.length)];
+      showGameWithIllustration(game.name, game.rules);
+      document.getElementById('extra-content').innerHTML = '';
+    }
+  </script>
+  <script>
+    // QR code for Telegram bot
+    const qr = new QRious({
       element: document.getElementById('tg-bot-qr'),
-      value: 'https://t.me/partyfunzabava_bot', // Your bot's username
+      value: 'https://t.me/partyfunzabava_bot', // username вашего бота
       size: 140,
       background: '#18122B',
-      foreground: '#FF9100', // Orange
+      foreground: '#FF9100', // Оранжевый
       level: 'H'
     });
   </script>
