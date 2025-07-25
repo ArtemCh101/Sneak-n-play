@@ -329,6 +329,7 @@ function sendGameToBot(gameName, messages) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ game_name: gameName, messages })
   }).then(r => {
+    console.log('DEBUG: fetch then', r.status, r.statusText);
     if (!r.ok) {
       console.warn('Ошибка отправки в Telegram-бот:', r.statusText);
     }

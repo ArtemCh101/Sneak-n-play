@@ -236,6 +236,7 @@
       }
     }
     function generateClassic() {
+      console.log('DEBUG: generateClassic called');
       const playerCount = parseInt(document.getElementById('playerCount').value);
       let filteredGames = classicGames.slice(0, 8).filter(g => g.name !== 'Данетки');
       if (!isNaN(playerCount)) {

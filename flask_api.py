@@ -3,8 +3,10 @@ from telegram import Bot
 import asyncio
 import logging
 import threading
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 TOKEN = '8415322329:AAG4pKDLVf3nbBqBLVRnAm2VW2xXTRlTFu4'
 bot = Bot(token=TOKEN)
 
@@ -35,10 +37,7 @@ async def _async_send_all(game_name, messages, users):
         logger.error(f"Send error: {e}")
 
 def async_to_sync(game_name, messages, users):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(_async_send_all(game_name, messages, users))
-    loop.close()
+    asyncio.run(_async_send_all(game_name, messages, users))
 
 @app.route('/send_game', methods=['POST'])
 def send_game():
