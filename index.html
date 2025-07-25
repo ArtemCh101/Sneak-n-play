@@ -96,7 +96,60 @@
       font-size: 1.55rem;
       font-weight: normal;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      flex-direction: column;
       font-family: 'Colibri', Arial, sans-serif;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      width: 90vw;
+      max-width: 900px;
+      min-height: 340px;
+      background: rgba(34, 193, 195, 0.10);
+      border: 2px solid #fff600;
+      border-radius: 16px;
+      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      margin-bottom: 2rem;
+    }
+    .illustration-col {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      background: transparent;
+    }
+    .illustration-col img {
+      max-width: 100%;
+      max-height: 320px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
+      object-fit: contain;
+    }
+    .content-col {
+      flex: 2 1 0;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+    .game-explanation {
+      color: #fff;
+      /* Optionally, add text-shadow for extra readability */
+      text-shadow: 0 0 6px #18122B, 0 0 2px #fff600;
+    }
+    @media (max-width: 800px) {
+      .main-content { flex-direction: column; min-height: unset; width: 98vw; margin-left: 1vw; margin-right: 1vw; }
+      .illustration-col, .content-col { width: 100%; padding: 1rem 0; }
+      .illustration-col img { max-height: 180px; }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
