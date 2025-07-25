@@ -3,35 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вечериночные забавы</title>
+  <title>Sneak'n'Play</title>
   <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%A5%B3%3C/text%3E%3C/svg%3E">
   <style>
     body {
-      background: #18122B;
+      background: #FFFEF7;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       margin: 0;
+      padding: 2rem 0;
       font-family: 'Orbitron', 'Arial', sans-serif;
     }
     .neon-header {
-      font-family: 'Monoton', cursive;
-      font-size: 4.1rem;
+      font-family: Impact, Charcoal, 'Arial Black', sans-serif;
+      font-size: 120px;
       font-weight: bold;
-      color: #39FF14;
-      text-shadow:
-        0 0 5px #39FF14,
-        0 0 10px #39FF14,
-        0 0 20px #39FF14,
-        0 0 40px #00E0FF,
-        0 0 80px #00E0FF;
+      color: #ed7d31;
       margin-bottom: 2rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.04em;
       text-align: center;
-      animation: flicker 2s infinite alternate;
     }
     @keyframes flicker {
       0%, 100% { opacity: 1; }
@@ -40,9 +34,9 @@
       55% { opacity: 0.85; }
     }
     .neon-btn {
-      background: #18122B;
-      border: 2px solid #FF00CC;
-      color: #FF00CC;
+      background: #FFFEF7;
+      border: 2px solid rgb(80, 150, 40);
+      color: rgb(80, 150, 40);
       font-family: 'Orbitron', 'Arial', sans-serif;
       font-size: 1.35rem;
       font-weight: bold;
@@ -50,305 +44,103 @@
       margin: 0 1rem 2rem 1rem;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow:
-        0 0 10px #FF00CC,
-        0 0 20px #FF00CC,
-        0 0 40px #00E0FF;
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       outline: none;
+    }
+     .neon-btn:hover {
+      background: rgb(80, 150, 40);
+      color: #fff;
     }
     .neon-btn-green {
       display: block;
       margin: 0 auto 1em auto;
-      background: #18122B;
-      border: 2px solid #39FF14;
-      color: #39FF14;
+      background: #FFFEF7;
+      border: 2px solid rgb(80, 150, 40);
+      color: rgb(80, 150, 40);
       font-family: 'Orbitron', 'Arial', sans-serif;
       font-size: 1.35rem;
       font-weight: bold;
       padding: 1rem 2.5rem;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow:
-        0 0 10px #39FF14,
-        0 0 20px #39FF14,
-        0 0 40px #00E0FF;
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       outline: none;
       text-align: center;
     }
     .neon-btn-green:hover {
-      background: #39FF14;
-      color: #18122B;
-      box-shadow:
-        0 0 20px #39FF14,
-        0 0 40px #39FF14,
-        0 0 80px #00E0FF;
+      background: rgb(80, 150, 40);
+      color: #fff;
+    }
+     .neon-btn-green:disabled {
+      cursor: not-allowed;
+      border-color: #555;
+      color: #555;
+      box-shadow: none;
+      background: #2a2a2a;
     }
     .neon-game-name {
-      font-family: 'Monoton', cursive;
+      font-family: 'Colibri', Arial, sans-serif;
       font-size: 3.1rem;
       font-weight: bold;
-      color: #FFD600;
-      text-shadow:
-        0 0 5px #FFD600,
-        0 0 10px #FFD600,
-        0 0 20px #FFD600,
-        0 0 40px #FF9100;
+      color: rgb(255, 170, 0);
       margin-bottom: 1rem;
-      margin-top: 0.5rem;
       text-align: center;
       letter-spacing: 0.05em;
-      border-radius: 18px;
-      padding: 0.3em 0.7em;
-      display: inline-block;
-      background: rgba(24, 18, 43, 0.7);
-      box-shadow:
-        0 0 10px #FFD600,
-        0 0 20px #FF9100;
     }
     #result {
       min-height: 80px;
-      min-width: 300px;
-      background: rgba(24, 18, 43, 0.8);
-      border: 2px solid #00E0FF;
-      border-radius: 20px;
-      margin-top: 1rem;
-      color: #00E0FF;
+      width: 60vw;
+      background: #FFFEF7;
+      margin: 1.5rem auto 0 auto;
+      color: #111;
       font-size: 1.55rem;
-      font-weight: bold;
-      font-family: 'Orbitron', 'Arial', sans-serif;
+      font-weight: normal;
       text-align: center;
-      box-shadow:
-        0 0 10px #00E0FF,
-        0 0 20px #00E0FF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      flex-direction: column;
-    }
-    .main-content {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      width: 90vw;
-      max-width: 900px;
-      min-height: 340px;
-      background: rgba(34, 193, 195, 0.10);
-      border: 2px solid #fff600;
-      border-radius: 16px;
-      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
-      margin-left: 5vw;
-      margin-right: 5vw;
-      margin-bottom: 2rem;
-    }
-    .illustration-col {
-      flex: 1 1 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 0;
-      background: transparent;
-    }
-    .illustration-col img {
-      max-width: 100%;
-      max-height: 320px;
-      border-radius: 12px;
-      box-shadow: 0 0 8px #fff600, 0 0 16px #f72585;
-      object-fit: contain;
-    }
-    .content-col {
-      flex: 2 1 0;
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 0;
-    }
-    .game-explanation {
-      color: #fff;
-      /* Optionally, add text-shadow for extra readability */
-      text-shadow: 0 0 6px #18122B, 0 0 2px #fff600;
-    }
-    @media (max-width: 800px) {
-      .main-content { flex-direction: column; min-height: unset; width: 98vw; margin-left: 1vw; margin-right: 1vw; }
-      .illustration-col, .content-col { width: 100%; padding: 1rem 0; }
-      .illustration-col img { max-height: 180px; }
+      font-family: 'Colibri', Arial, sans-serif;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 <body>
-  <div style="position:absolute;top:18px;right:32px;text-align:center;z-index:10;">
-    <div style="display:inline-block;padding:10px;border-radius:22px;background:rgba(24,18,43,0.85);box-shadow:0 0 18px 6px #FF9100,0 0 40px 10px #FF9100;">
-      <canvas id="tg-bot-qr" width="140" height="140" style="display:block;margin:0 auto;"></canvas>
+  <div style="width:100%;max-width:1200px;margin:0 auto 2rem auto;position:relative;height:260px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;height:100%;">
+      <div style="min-width:270px;display:flex;justify-content:flex-start;z-index:1;position:absolute;left:-50px;top:10px;height:100%;align-items:center;">
+        <img src="image/snake_left.webp" alt="Змея слева" style="width:270px;height:270px;object-fit:contain;transform:scaleX(-1);"/>
+      </div>
+      <div style="min-width:250px;display:flex;justify-content:flex-end;z-index:1;position:absolute;right:0;top:0;height:100%;align-items:center;">
+        <img src="image/snake_main.webp" alt="Змея" style="width:250px;height:250px;object-fit:contain;"/>
+      </div>
     </div>
-    <div style="margin-top:0.7em;display:flex;justify-content:center;">
-      <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"
-        style="filter:drop-shadow(0 0 12px #FF9100) drop-shadow(0 0 28px #B86B1F);">
-        <circle cx="35" cy="35" r="33" fill="#18122B" stroke="#FF9100" stroke-width="4"/>
-        <polygon points="10,36 62,18 40,58 40,41 54,28 34,46" fill="#FF9100" stroke="#B86B1F" stroke-width="2.3"/>
-        <polygon points="40,58 46,64 47,48" fill="#FF9100" stroke="#B86B1F" stroke-width="1.8"/>
-      </svg>
+    <div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none;z-index:2;">
+      <div class="neon-header" style="pointer-events:auto;">Sneak'n'Play</div>
+      <div style="margin:0.5rem 0 0 0;display:flex;justify-content:center;align-items:center;gap:0.7em;pointer-events:auto;">
+        <label for="playerCount" style="color:#111;font-family:'Orbitron',sans-serif;font-size:1.35rem;">Количество игроков:</label>
+        <select id="playerCount" style="font-size:1.35rem;padding:0.1em 0.1em;border-radius:10px;border:1.67px solid #111;background:#FFFEF7;color:#111;outline:none;text-align:left;">
+          <option value="">Любое</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10+</option>
+        </select>
+      </div>
     </div>
   </div>
-  <div class="neon-header">Вечериночные забавы</div>
-  <div style="margin-bottom:1rem;">
-    <label for="playerCount" style="color:#00E0FF;font-family:'Orbitron',sans-serif;font-size:1.25rem;font-weight:bold;">Количество игроков:</label>
-    <select id="playerCount" style="font-size:1.25rem;font-weight:bold;padding:0.3rem 1rem;border-radius:10px;border:2px solid #00E0FF;background:#18122B;color:#00E0FF;outline:none;">
-      <option value="">Любое</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12">12</option>
-      <option value="13">13</option>
-      <option value="14">14</option>
-      <option value="15">15</option>
-      <option value="16">16</option>
-      <option value="17">17</option>
-      <option value="18">18</option>
-      <option value="19">19</option>
-      <option value="20">20</option>
-    </select>
+
+  <div>
+    <!-- The buttons now have IDs and no 'onclick' attributes -->
+    <button id="classicButton" class="neon-btn">Классическая игра</button>
+    <button id="aiButton" class="neon-btn">AI-генератор игры</button>
   </div>
-  <div class="button-row">
-    <button class="neon-btn" id="classic-btn">Классическая игра</button>
-    <button class="neon-btn" id="ai-btn">AI-генератор игры</button>
-  </div>
-  <div class="main-content" id="main-content">
-    <div class="illustration-col" id="illustration-col"></div>
-    <div class="content-col" id="content-col"></div>
-  </div>
+
+  <div id="result">Нажми на кнопку и получи игру для весёлой компании!</div>
   <div id="extra-content" style="margin-top:1.2em;"></div>
+
+  <!-- Our unified script file is loaded at the end of the body -->
   <script src="script.js"></script>
-  <script>
-    const aiGames = [
-      {
-        name: 'СмехоБаттл',
-        rules: 'Два игрока по очереди рассказывают самые нелепые шутки. Кто засмеётся первым — проиграл!'
-      },
-      {
-        name: 'Звуковой Хаос',
-        rules: 'Один игрок изображает любой звук (животное, техника, природа), остальные угадывают. Кто угадал — следующий!'
-      },
-      {
-        name: 'Мини-Диктор',
-        rules: 'Каждый по очереди озвучивает новости дня в стиле комедии или фантастики. Чем абсурднее — тем лучше!'
-      },
-      {
-        name: 'Путаница слов',
-        rules: 'Игроки по очереди говорят слова, не связанные друг с другом. Кто случайно свяжет — рассказывает анекдот!'
-      },
-      {
-        name: 'Театр эмоций',
-        rules: 'Один игрок изображает эмоцию, остальные угадывают. Иногда эмоция — “я увидел огромную пиццу”.'
-      },
-      {
-        name: 'Сказка на лету',
-        rules: 'Один начинает рассказывать сказку, каждый следующий добавляет по предложению. Чем нелепее — тем веселее!'
-      },
-      {
-        name: 'Рифмопад',
-        rules: 'Придумайте рифму к слову соседа. Кто не смог — рассказывает стихотворение!'
-      },
-      {
-        name: 'Голос из будущего',
-        rules: 'Один говорит фразу, как будто он робот из будущего. Остальные угадывают, что это за фраза.'
-      },
-      {
-        name: 'Секретный комплимент',
-        rules: 'Каждый по очереди говорит комплимент, но с необычным словом (например, “ты как солнечный холодильник!”).'
-      },
-      {
-        name: 'Вопрос наоборот',
-        rules: 'На любой вопрос можно отвечать только вопросом. Кто ошибётся — поёт песню!'
-      }
-    ];
-    function showExtraContent(gameName) {
-      const extraDiv = document.getElementById('extra-content');
-      extraDiv.innerHTML = '';
-      if (gameName === 'Крокодил') {
-        extraDiv.innerHTML = `<button class='neon-btn-green' onclick='window.renewCrocodileWords()'>Обновить слова</button>`;
-        window.renewCrocodileWords = function(){};
-      } else if (gameName === 'Шляпа') {
-        extraDiv.innerHTML = `<button class='neon-btn-green' onclick='window.renewHatWords()'>Обновить слова</button>`;
-        window.renewHatWords = function(){};
-      } else if (gameName === 'Объясни слово') {
-        extraDiv.innerHTML = `<button class='neon-btn-green' onclick='window.renewExplainWords()'>Обновить слова</button>`;
-        window.renewExplainWords = function(){};
-      }
-    }
-    const illustrationImages = [
-      'image/snake_tree.png',
-      'image/snake_aristo.png',
-      'image/snake_scoobypng.png',
-      'image/snake_heart.png',
-      'image/snake_baloon.png',
-      'image/snake_ny.png',
-      'image/snake_hanging.png'
-    ];
-
-    function getRandomIllustration() {
-      const idx = Math.floor(Math.random() * illustrationImages.length);
-      return illustrationImages[idx];
-    }
-
-    // Show a random image on first load
-    window.onload = function() {
-      const illustration = getRandomIllustration();
-      document.getElementById('illustration-col').innerHTML = `<img src="${illustration}" alt="Illustration">`;
-      document.getElementById('content-col').innerHTML = `<div class="game-explanation" style="margin-top:0.7em;">Нажмите кнопку, чтобы получить идею для игры!</div>`;
-      // Fix: Set up button event listeners after DOM is loaded
-      document.getElementById('classic-btn').onclick = generateClassic;
-      document.getElementById('ai-btn').onclick = generateAI;
-    };
-
-    function showGameWithIllustration(name, descOrRules) {
-      const illustration = getRandomIllustration();
-      document.getElementById('illustration-col').innerHTML = `<img src="${illustration}" alt="Illustration">`;
-      document.getElementById('content-col').innerHTML = `<div class="neon-game-name">${name}</div><div class="game-explanation" style="margin-top:0.7em;">${descOrRules}</div>`;
-    }
-
-    function generateClassic() {
-      console.log('DEBUG: generateClassic called');
-      const playerCount = parseInt(document.getElementById('playerCount').value);
-      let filteredGames = classicGames.slice(0, 8).filter(g => g.name !== 'Данетки');
-      if (!isNaN(playerCount)) {
-        filteredGames = filteredGames.filter(g => playerCount >= g.minPlayers && playerCount <= g.maxPlayers);
-      }
-      if (filteredGames.length === 0) {
-        document.getElementById('result').textContent = 'Нет подходящих игр для такого количества игроков!';
-        document.getElementById('extra-content').innerHTML = '';
-        return;
-      }
-      const game = filteredGames[Math.floor(Math.random() * filteredGames.length)];
-      showGameWithIllustration(game.name, game.detailedRules || game.rules);
-      showExtraContent(game.name);
-    }
-    function generateAI() {
-      const game = aiGames[Math.floor(Math.random() * aiGames.length)];
-      showGameWithIllustration(game.name, game.rules);
-      document.getElementById('extra-content').innerHTML = '';
-    }
-  </script>
-  <script>
-    // QR code for Telegram bot
-    const qr = new QRious({
-      element: document.getElementById('tg-bot-qr'),
-      value: 'https://t.me/partyfunzabava_bot', // username вашего бота
-      size: 140,
-      background: '#18122B',
-      foreground: '#FF9100', // Оранжевый
-      level: 'H'
-    });
-  </script>
 </body>
 </html>

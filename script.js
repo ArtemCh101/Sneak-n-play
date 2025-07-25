@@ -128,20 +128,6 @@ function showExtraContent(gameName) {
             btn.disabled = true;
         };
         extraDiv.appendChild(btn);
-    } else {
-        // Для остальных игр — кнопка "Начать веселье"
-        const btn = document.createElement('button');
-        btn.className = 'neon-btn-green';
-        btn.textContent = 'Начать веселье';
-        btn.onclick = () => {
-            // Найти правила для игры
-            const rules = (classicGames.find(g => g.name === gameName) || {}).rules || '';
-            const announcement = `Игра: <b>${gameName}</b>\n${rules}`;
-            sendGameToBot(gameName, [announcement]);
-            btn.textContent = 'Веселье началось!';
-            btn.disabled = true;
-        };
-        extraDiv.appendChild(btn);
     }
 }
 
@@ -165,9 +151,91 @@ function generateClassic() {
     }
 
     const game = filteredGames[Math.floor(Math.random() * filteredGames.length)];
-    resultDiv.innerHTML = `<div class="neon-game-name">${game.name}</div><div style="margin-top:0.7em;">${game.detailedRules || game.rules}</div>`;
-    showExtraContent(game.name);
-    // Не отправлять сообщение автоматически!
+    // Определяем, нужна ли кнопка для слов
+    const needsWords = (game.name === 'Крокодил' || game.name === 'Шляпа' || game.name === 'Объясни слово');
+    let html = `<div class="neon-game-name">${game.name}</div><div style="margin-top:0.7em;">${game.detailedRules || game.rules}</div>`;
+    resultDiv.innerHTML = html;
+    // Если нужны слова — добавляем кнопку прямо сюда
+    if (needsWords) {
+        // Create a flex row for text and icon
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.justifyContent = 'center';
+        row.style.gap = '1.2em';
+        row.style.margin = '0';
+        row.style.marginTop = '0.7em';
+
+        // Text
+        const info = document.createElement('span');
+        info.textContent = 'Пока ты думаешь, наша змея уже придумала слова — переходи в Telegram-бот!';
+        info.style.fontSize = '1.15rem';
+        info.style.color = '#111';
+        info.style.fontFamily = 'Colibri, Arial, sans-serif';
+        row.appendChild(info);
+
+        // Telegram icon (SVG in <a>)
+        const iconBtn = document.createElement('button');
+        iconBtn.type = 'button';
+        iconBtn.style.background = 'none';
+        iconBtn.style.border = 'none';
+        iconBtn.style.padding = '0';
+        iconBtn.style.marginLeft = '-25px';
+        iconBtn.style.cursor = 'pointer';
+        iconBtn.title = 'Раздать слова игрокам';
+        iconBtn.innerHTML = `
+          <svg width="28" height="28" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <circle cx="35" cy="35" r="33" fill="#229ED9" stroke="#229ED9" stroke-width="4"/>
+            <polygon points="10,36 62,18 40,58 40,41 54,28 34,46" fill="#fff" stroke="#fff" stroke-width="2.3"/>
+            <polygon points="40,58 46,64 47,48" fill="#fff" stroke="#fff" stroke-width="1.8"/>
+          </svg>
+        `;
+        iconBtn.onclick = () => {
+            let wordsArray = [];
+            if (game.name === 'Крокодил') wordsArray = crocodileWords;
+            else if (game.name === 'Шляпа') wordsArray = hatWords;
+            else if (game.name === 'Объясни слово') wordsArray = explainWords;
+            const words = getRandomWords(wordsArray, playerCount || 4);
+            const rules = (classicGames.find(g => g.name === game.name) || {}).rules || '';
+            const messages = words.map(w => `Игра: <b>${game.name}</b>\n${rules}\nТебе слово: <b>${w}</b>`);
+            sendGameToBot(game.name, messages);
+            iconBtn.disabled = true;
+        };
+        row.appendChild(iconBtn);
+
+        resultDiv.appendChild(row);
+        // QR code below the helper row
+        const qrWrap = document.createElement('div');
+        qrWrap.style.display = 'flex';
+        qrWrap.style.justifyContent = 'center';
+        qrWrap.style.marginTop = '10px';
+        qrWrap.style.width = '100%';
+        const qrBox = document.createElement('div');
+        qrBox.style.display = 'inline-block';
+        qrBox.style.padding = '0';
+        qrBox.style.borderRadius = '0';
+        qrBox.style.background = 'none';
+        const qrCanvas = document.createElement('canvas');
+        qrCanvas.id = 'tg-bot-qr-dynamic';
+        qrCanvas.width = 108;
+        qrCanvas.height = 108;
+        qrBox.appendChild(qrCanvas);
+        qrWrap.appendChild(qrBox);
+        resultDiv.appendChild(qrWrap);
+        // Generate QR code
+        setTimeout(() => {
+          new QRious({
+            element: document.getElementById('tg-bot-qr-dynamic'),
+            value: 'https://t.me/partyfunzabava_bot',
+            size: 108,
+            background: '#FFFEF7',
+            foreground: '#FF9100',
+            level: 'H'
+          });
+        }, 0);
+    }
+    // Не показываем никаких кнопок в extra-content
+    document.getElementById('extra-content').innerHTML = '';
 }
 
 /**
