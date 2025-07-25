@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Game Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%A5%B3%3C/text%3E%3C/svg%3E">
+  <style>
+    body {
+      background: #18122B;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      font-family: 'Orbitron', 'Arial', sans-serif;
+    }
+    .neon-header {
+      font-family: 'Monoton', cursive;
+      font-size: 3rem;
+      color: #39FF14;
+      text-shadow:
+        0 0 5px #39FF14,
+        0 0 10px #39FF14,
+        0 0 20px #39FF14,
+        0 0 40px #00E0FF,
+        0 0 80px #00E0FF;
+      margin-bottom: 2rem;
+      letter-spacing: 0.1em;
+      text-align: center;
+      animation: flicker 2s infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      45% { opacity: 0.85; }
+      50% { opacity: 0.7; }
+      55% { opacity: 0.85; }
+    }
+    .neon-btn {
+      background: #18122B;
+      border: 2px solid #FF00CC;
+      color: #FF00CC;
+      font-family: 'Orbitron', 'Arial', sans-serif;
+      font-size: 1.2rem;
+      padding: 1rem 2.5rem;
+      margin: 0 1rem 2rem 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow:
+        0 0 10px #FF00CC,
+        0 0 20px #FF00CC,
+        0 0 40px #00E0FF;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .neon-btn:hover {
+      background: #FF00CC;
+      color: #18122B;
+      box-shadow:
+        0 0 20px #FF00CC,
+        0 0 40px #FF00CC,
+        0 0 80px #00E0FF;
+    }
+    .neon-game-name {
+      font-family: 'Monoton', cursive;
+      font-size: 2.2rem;
+      color: #FFD600;
+      text-shadow:
+        0 0 5px #FFD600,
+        0 0 10px #FFD600,
+        0 0 20px #FFD600,
+        0 0 40px #FF9100;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+      border-radius: 18px;
+      padding: 0.3em 0.7em;
+      display: inline-block;
+      background: rgba(24, 18, 43, 0.7);
+      box-shadow:
+        0 0 10px #FFD600,
+        0 0 20px #FF9100;
+    }
+    #result {
+      min-height: 80px;
+      min-width: 300px;
+      background: rgba(24, 18, 43, 0.8);
+      border: 2px solid #00E0FF;
+      border-radius: 20px;
+      margin-top: 1rem;
+      color: #00E0FF;
+      font-size: 1.3rem;
+      font-family: 'Orbitron', 'Arial', sans-serif;
+      text-align: center;
+      box-shadow:
+        0 0 10px #00E0FF,
+        0 0 20px #00E0FF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-header">Вечериночные Забавы</div>
+  <div style="margin-bottom:1rem;">
+    <label for="playerCount" style="color:#00E0FF;font-family:'Orbitron',sans-serif;font-size:1.1rem;">Количество игроков:</label>
+    <select id="playerCount" style="font-size:1.1rem;padding:0.3rem 1rem;border-radius:10px;border:2px solid #00E0FF;background:#18122B;color:#00E0FF;outline:none;">
+      <option value="">Любое</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="18">18</option>
+      <option value="19">19</option>
+      <option value="20">20</option>
+    </select>
+  </div>
+  <div>
+    <button class="neon-btn" onclick="generateClassic()">Классическая игра</button>
+    <button class="neon-btn" onclick="generateAI()">AI-генератор игры</button>
+  </div>
+  <div id="result">Нажми на кнопку и получи игру для весёлой компании!</div>
+  <script src="script.js"></script>
+  <script>
+    const aiGames = [
+      {
+        name: 'СмехоБаттл',
+        rules: 'Два игрока по очереди рассказывают самые нелепые шутки. Кто засмеётся первым — проиграл!'
+      },
+      {
+        name: 'Звуковой Хаос',
+        rules: 'Один игрок изображает любой звук (животное, техника, природа), остальные угадывают. Кто угадал — следующий!'
+      },
+      {
+        name: 'Мини-Диктор',
+        rules: 'Каждый по очереди озвучивает новости дня в стиле комедии или фантастики. Чем абсурднее — тем лучше!'
+      },
+      {
+        name: 'Путаница слов',
+        rules: 'Игроки по очереди говорят слова, не связанные друг с другом. Кто случайно свяжет — рассказывает анекдот!'
+      },
+      {
+        name: 'Театр эмоций',
+        rules: 'Один игрок изображает эмоцию, остальные угадывают. Иногда эмоция — “я увидел огромную пиццу”.'
+      },
+      {
+        name: 'Сказка на лету',
+        rules: 'Один начинает рассказывать сказку, каждый следующий добавляет по предложению. Чем нелепее — тем веселее!'
+      },
+      {
+        name: 'Рифмопад',
+        rules: 'Придумайте рифму к слову соседа. Кто не смог — рассказывает стихотворение!'
+      },
+      {
+        name: 'Голос из будущего',
+        rules: 'Один говорит фразу, как будто он робот из будущего. Остальные угадывают, что это за фраза.'
+      },
+      {
+        name: 'Секретный комплимент',
+        rules: 'Каждый по очереди говорит комплимент, но с необычным словом (например, “ты как солнечный холодильник!”).'
+      },
+      {
+        name: 'Вопрос наоборот',
+        rules: 'На любой вопрос можно отвечать только вопросом. Кто ошибётся — поёт песню!'
+      }
+    ];
+    function generateClassic() {
+      const playerCount = parseInt(document.getElementById('playerCount').value);
+      let filteredGames = classicGames;
+      if (!isNaN(playerCount)) {
+        filteredGames = classicGames.filter(g => playerCount >= g.minPlayers && playerCount <= g.maxPlayers);
+      }
+      if (filteredGames.length === 0) {
+        document.getElementById('result').textContent = 'Нет подходящих игр для такого количества игроков!';
+        return;
+      }
+      const game = filteredGames[Math.floor(Math.random() * filteredGames.length)];
+      document.getElementById('result').innerHTML = `<div class="neon-game-name">${game.name}</div><div style="margin-top:0.7em;">${game.detailedRules || game.rules}</div>`;
+    }
+    function generateAI() {
+      const game = aiGames[Math.floor(Math.random() * aiGames.length)];
+      document.getElementById('result').innerHTML = `<div class="neon-game-name">${game.name}</div><div style="margin-top:0.7em;">${game.rules}</div>`;
+    }
+  </script>
+</body>
+</html> 
